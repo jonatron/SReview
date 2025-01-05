@@ -16,6 +16,19 @@ services:
     depends_on:
       - db
 
+  djangoadmin:
+    build:
+      context: djangosreview/
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./djangosreview/:/usr/src/app/
+      - static_volume:/home/app/web/staticfiles
+      - media_volume:/home/app/web/mediafiles
+    ports:
+      - 8000:8000
+    depends_on:
+      - db
+
   db:
     image: postgres:17.2
     volumes:
@@ -24,6 +37,11 @@ services:
       - POSTGRES_USER=sreviewuser
       - POSTGRES_PASSWORD=sreviewpassword
       - POSTGRES_DB=sreviewdb
+    ports:
+      - 5432:5432
+
 
 volumes:
   postgres_data:
+  static_volume:
+  media_volume:
